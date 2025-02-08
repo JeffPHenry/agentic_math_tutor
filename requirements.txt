@@ -1,0 +1,7 @@
+langchain>=0.0.128
+dash==2.14.2
+openai==1.12.0
+chromadb
+pypdf
+python-dotenv==1.0.0
+tiktoken

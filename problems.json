@@ -1,0 +1,112 @@
+{
+  "problems": [
+    {
+      "problem_number": 1,
+      "problem": "Evaluate the expression 2024^2 - 2023^2.",
+      "explanation": "This problem demonstrates how to simplify the difference of two consecutive squares. Rather than performing large multiplications, we use the factorization identity a^2 - b^2 = (a - b)(a + b), which is more efficient and avoids potential arithmetic mistakes.",
+      "hints": {
+        "1": "Recall the difference of squares formula: a^2 - b^2 = (a - b)(a + b).",
+        "2": "Notice that 2024 and 2023 differ by 1, greatly simplifying one factor.",
+        "3": "Check your result by direct computation if you want to confirm."
+      },
+      "solutions": [
+        {
+          "method": "Difference of Squares",
+          "solution": "(2024 - 2023)(2024 + 2023) = 1 × 4047 = 4047."
+        },
+        {
+          "method": "Direct Computation",
+          "solution": "2024^2 = 4096576 and 2023^2 = 4092529; their difference is 4096576 - 4092529 = 4047."
+        },
+        {
+          "method": "Modular Arithmetic Trick",
+          "solution": "Noticing 2024 and 2023 are consecutive makes the product (2024 - 2023)(2024 + 2023) straightforward: 1 × 4047 = 4047."
+        }
+      ]
+    },
+    {
+      "problem_number": 2,
+      "problem": "A model estimates hiking time using the formula T = aL + bH, where L is the trail length in miles, and H is the altitude gain in feet. Given two cases with known values, find the time estimate for a different trail.",
+      "explanation": "We have a linear model T = aL + bH, where a and b are constants to be determined. By using two known data points for (L, H, T), we can form two linear equations and solve them simultaneously for a and b. Once we have a and b, we can predict T for any new values of L and H.",
+      "hints": {
+        "1": "Use two known data points to set up two separate equations in terms of a and b.",
+        "2": "Solve the system (by substitution or elimination) to find a and b.",
+        "3": "Substitute your found a and b values into T = aL + bH to get the new estimate."
+      },
+      "solutions": [
+        {
+          "method": "Solving for a and b",
+          "solution": "We are given two equations with known values for L, H, and T. Solving them simultaneously gives us numerical values for a and b. We then substitute these constants back into the formula to find T for the new trail."
+        },
+        {
+          "method": "Alternative Variable Substitution",
+          "solution": "To reduce large numbers, we might normalize H by dividing by 1000 or some other convenient factor. This yields a simpler system of equations. After solving for scaled versions of a and b, we reconvert them and use them to calculate T for the new trail."
+        }
+      ]
+    },
+    {
+      "problem_number": 3,
+      "problem": "Pablo decorates identical white balls by flipping a coin to decide their color and pattern. Frida picks one ball at random. The probability that 'red' and 'striped' are independent is given by a fraction. Find the sum of the numerator and denominator.",
+      "explanation": "Here, we deal with the concept of independence between two events—'red' and 'striped.' Two events A and B are independent if P(A ∩ B) = P(A) × P(B). We must determine the fraction that characterizes this independence and then sum its numerator and denominator.",
+      "hints": {
+        "1": "Define events: Let A = 'Ball is red' and B = 'Ball is striped.'",
+        "2": "For independence, P(A ∩ B) must equal P(A) × P(B).",
+        "3": "Enumerate all possible outcomes (color/pattern) to find the probabilities systematically."
+      },
+      "solutions": [
+        {
+          "method": "Probability Calculation",
+          "solution": "Assume P(Red) = p, P(Striped) = q. For them to be independent, p × q must equal P(Red and Striped). Setting up the equations with the coin-flip scenario yields the fraction, and summing its numerator and denominator gives the final answer."
+        },
+        {
+          "method": "Symmetry-Based Shortcut",
+          "solution": "Because each decorating choice is made with a fair coin flip, we can use symmetric arguments or count the outcomes in a small sample space. This approach more directly yields the fraction, from which we get the numerator-plus-denominator sum."
+        }
+      ]
+    },
+    {
+      "problem_number": 4,
+      "problem": "Find the number of ordered triples (a, b, c) of positive integers such that they form the altitudes of a non-degenerate triangle with an integer inradius.",
+      "explanation": "In this problem, (a, b, c) are not the side lengths but the altitudes of a valid triangle. A triangle is non-degenerate if its sides follow the usual triangle inequalities. Additionally, the inradius (the radius of the inscribed circle) must be an integer, imposing further restrictions on a, b, and c. We must carefully account for these constraints to count all possible valid triples.",
+      "hints": {
+        "1": "Remember the triangle inequality: any two sides must add to more than the third. Translate this condition for altitudes.",
+        "2": "An integer inradius, r = (2 × area) / (perimeter), places specific restrictions on the altitudes and side lengths.",
+        "3": "Recall that each altitude can be written as altitude = (2 × area) / side."
+      },
+      "solutions": [
+        {
+          "method": "Triangle Property Casework",
+          "solution": "List all possible small (a, b, c) that can serve as altitudes of some triangle satisfying the triangle inequality. Then use the formula relating altitudes and inradius to check integer values for the inradius. Count the valid cases."
+        },
+        {
+          "method": "Integer Constraint Elimination",
+          "solution": "Work algebraically with the relationships among altitudes, side lengths, area, and inradius. Derive conditions that quickly eliminate impossibilities, then verify which remaining triples produce an integer inradius."
+        }
+      ]
+    },
+    {
+      "problem_number": 5,
+      "problem": "A right pyramid has a regular octagonal base with side length 1 and an apex. The square of its height is sought.",
+      "explanation": "We need to determine the (vertical) height of a regular right pyramid whose base is a regular octagon of side 1. Since the pyramid is 'right,' its apex lies directly above the center of the base. We can split the octagon into congruent isosceles triangles, find key distances using geometry or trigonometry, and then apply the Pythagorean theorem to obtain the height squared.",
+      "hints": {
+        "1": "Divide the regular octagon into 8 isosceles triangles from its center to the vertices.",
+        "2": "Determine the distance from the center to a vertex (or side midpoint) using geometry or trigonometry.",
+        "3": "Use a right-triangle cross-section that includes the apex, the center of the base, and a vertex to apply the Pythagorean theorem for the height."
+      },
+      "solutions": [
+        {
+          "method": "Pythagorean Theorem",
+          "solution": "Divide the octagon into triangles, determine the radius of the circumscribed circle or the distance from the center to a vertex, and use right-triangle relationships to calculate the height. Square that value to answer the question."
+        },
+        {
+          "method": "Vector-Based Calculation",
+          "solution": "Place the octagon in the xy-plane with coordinates for each vertex, and let the apex be on the z-axis. Using vectors, you can compute the height as the perpendicular distance from the apex to the plane of the octagon. Then square this value."
+        },
+        {
+          "method": "Geometric Symmetry Approach",
+          "solution": "Leverage the symmetry of a regular octagon and the right pyramid to focus on one representative cross-section. By slicing through the apex and two adjacent vertices, you reduce the 3D problem to a 2D cross-section and can more easily apply geometry to find the height."
+        }
+      ]
+    }
+  ]
+}
