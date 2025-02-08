@@ -9,8 +9,15 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Debug: Print API key (first few characters)
+api_key = os.getenv("OPENAI_API_KEY")
+if api_key:
+    print(f"API Key loaded (first 10 chars): {api_key[:10]}...")
+else:
+    print("Warning: No API key found!")
+
 # Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=api_key)
 
 # Load problems from JSON file
 with open("problems.json", "r") as f:
@@ -366,4 +373,4 @@ def next_problem(n_clicks, data):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8051)
+    app.run_server(debug=True, port=8052)
