@@ -8,14 +8,13 @@ from dotenv import load_dotenv
 from db_utils import DatabaseManager
 
 # Load environment variables
-load_dotenv()
+load_dotenv(override=True)  # Add override=True to force it to take precedence
 
-# Debug: Print API key (first few characters)
+# Get API key from environment
 api_key = os.getenv("OPENAI_API_KEY")
-if api_key:
-    print(f"API Key loaded (first 10 chars): {api_key[:10]}...")
-else:
-    print("Warning: No API key found!")
+if not api_key:
+    print("Warning: No API key found in environment, please set OPENAI_API_KEY")
+    exit(1)
 
 # Initialize OpenAI client and database
 client = OpenAI(api_key=api_key)
@@ -27,6 +26,60 @@ app = dash.Dash(__name__,
         'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap'
     ]
 )
+
+# Add custom CSS for animations
+app.index_string = '''
+<!DOCTYPE html>
+<html>
+    <head>
+        {%metas%}
+        <title>{%title%}</title>
+        {%favicon%}
+        {%css%}
+        <style>
+            /* Add custom CSS here */
+            .problem-text {
+                font-size: 1.2em;
+                line-height: 1.6;
+                margin-bottom: 1.5rem;
+            }
+            .problem-number {
+                text-align: center;
+                margin-bottom: 1.5rem;
+                background-color: rgba(255, 255, 255, 0.6);
+                padding: 0.75rem;
+                border-radius: 8px;
+                backdrop-filter: blur(8px);
+            }
+            .stats-card {
+                margin-bottom: 2rem;
+                padding: 1.5rem;
+                border-radius: 12px;
+                background-color: rgba(255, 255, 255, 0.6);
+                backdrop-filter: blur(8px);
+                display: flex;
+                flex-wrap: wrap;
+                gap: 2rem;
+                justify-content: space-around;
+                align-items: center;
+            }
+            .feedback-area {
+                margin-bottom: 1.5rem;
+                padding: 1.5rem;
+                border-radius: 12px;
+            }
+        </style>
+    </head>
+    <body>
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        </footer>
+    </body>
+</html>
+'''
 
 app.title = "Math Tutor Dashboard"
 
@@ -90,7 +143,7 @@ Evaluate the answer and provide personalized feedback."""}
 
 # Layout with login page
 app.layout = html.Div([
-    # URL Location
+    # URL Location (only define it once at the top level)
     dcc.Location(id='url', refresh=False),
     
     # Login page
@@ -147,7 +200,7 @@ app.layout = html.Div([
         "padding": "0 1.5rem"
     }),
     
-    # Main app page
+    # Main app
     html.Div(id='main-app', style={"display": "none"}, children=[
         # Stats container
         html.Div([
@@ -182,7 +235,7 @@ app.layout = html.Div([
             ])
         ]),
         
-        # Main container
+        # Main content container
         html.Div([
             # Header
             html.H1("Math Tutor", style={
@@ -313,12 +366,9 @@ app.layout = html.Div([
             "margin": "2rem auto",
             "padding": "0 1.5rem"
         }),
-
-        # Add back the store component
-        dcc.Store(id="store-state", data={"current_problem": 1, "hint_count": {}, "user_id": None}),
         
-        # Add URL location store
-        dcc.Location(id='url', refresh=False)
+        # Store component for state management
+        dcc.Store(id="store-state", data={"current_problem": 1, "hint_count": {}, "user_id": None})
     ])
 ])
 
