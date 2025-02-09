@@ -21,6 +21,15 @@ else:
 client = OpenAI(api_key=api_key)
 db = DatabaseManager()
 
+# Initialize the Dash app with external stylesheets
+app = dash.Dash(__name__, 
+    external_stylesheets=[
+        'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap'
+    ]
+)
+
+app.title = "Math Tutor Dashboard"
+
 # Load problems from JSON file
 with open("problems.json", "r") as f:
     problems_data = json.load(f)["problems"]
@@ -79,101 +88,130 @@ Evaluate the answer and provide personalized feedback."""}
     except Exception as e:
         return f"Error evaluating answer: {str(e)}"
 
-app = dash.Dash(__name__)
-app.title = "Math Tutor Dashboard"
-
 # Layout with login page
 app.layout = html.Div([
+    # URL Location
     dcc.Location(id='url', refresh=False),
     
     # Login page
     html.Div(id='login-page', children=[
         html.H1("Welcome to Math Tutor", style={
             "textAlign": "center",
+            "marginBottom": "2rem",
             "color": "#2c3e50",
-            "marginTop": "50px"
+            "fontFamily": "'Poppins', sans-serif",
+            "fontWeight": "600"
         }),
-        html.Div([
-            dcc.Input(
-                id="username-input",
-                type="text",
-                placeholder="Enter your name",
-                style={
-                    "width": "300px",
-                    "height": "40px",
-                    "fontSize": "16px",
-                    "padding": "10px",
-                    "marginBottom": "20px"
-                }
-            ),
-            html.Button("Start Learning", id="login-button", style={
-                "width": "300px",
-                "height": "40px",
-                "fontSize": "16px",
-                "backgroundColor": "#3498db",
+        
+        dcc.Input(
+            id='username-input',
+            type='text',
+            placeholder='Enter your name',
+            style={
+                "width": "100%",
+                "maxWidth": "300px",
+                "padding": "1rem",
+                "marginBottom": "1.5rem",
+                "borderRadius": "8px",
+                "fontSize": "1.1em",
+                "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                "backdropFilter": "blur(8px)",
+                "border": "2px solid rgba(255, 255, 255, 0.2)",
+                "display": "block",
+                "margin": "0 auto 1.5rem auto"
+            }
+        ),
+        
+        html.Button('START LEARNING', 
+            id='login-button',
+            n_clicks=0,
+            style={
+                "backgroundColor": "rgba(0, 123, 255, 0.9)",
                 "color": "white",
                 "border": "none",
-                "borderRadius": "4px",
-                "cursor": "pointer"
-            })
-        ], style={
-            "display": "flex",
-            "flexDirection": "column",
-            "alignItems": "center",
-            "marginTop": "50px"
-        })
-    ]),
+                "padding": "1rem 2rem",
+                "borderRadius": "8px",
+                "cursor": "pointer",
+                "fontSize": "0.9em",
+                "fontWeight": "500",
+                "letterSpacing": "0.5px",
+                "textTransform": "uppercase",
+                "display": "block",
+                "margin": "0 auto",
+                "fontFamily": "'Poppins', sans-serif"
+            }
+        )
+    ], style={
+        "maxWidth": "600px",
+        "margin": "4rem auto",
+        "padding": "0 1.5rem"
+    }),
     
     # Main app page
     html.Div(id='main-app', style={"display": "none"}, children=[
-        html.Div([  # User info and stats
-            html.Div(id="user-info", style={
-                "marginBottom": "20px",
-                "padding": "15px",
-                "backgroundColor": "#f8f9fa",
-                "borderRadius": "4px"
-            }),
-            html.Div(id="user-stats", style={
-                "marginBottom": "20px",
-                "padding": "15px",
-                "backgroundColor": "#f8f9fa",
-                "borderRadius": "4px"
-            })
+        # Stats container
+        html.Div([
+            html.Div(className="card stats-card", style={
+                "marginBottom": "2rem",
+                "padding": "1.5rem",
+                "borderRadius": "12px",
+                "backgroundColor": "rgba(255, 255, 255, 0.6)",
+                "backdropFilter": "blur(8px)",
+                "display": "flex",
+                "flexWrap": "wrap",
+                "gap": "2rem",
+                "justifyContent": "space-around",
+                "alignItems": "center"
+            }, children=[
+                # Welcome message
+                html.Div([
+                    html.H3("Welcome back!", style={"margin": "0", "fontSize": "1.4em"}),
+                    html.Div(id="user-info", style={"fontSize": "1.1em"})
+                ]),
+                
+                # Problems attempted
+                html.Div([
+                    html.H3("Your Progress", style={"margin": "0", "fontSize": "1.4em"}),
+                    html.Div(id="user-stats", style={"fontSize": "1.1em"})
+                ]),
+                
+                # Success rate
+                html.Div([
+                    html.Div(id="problem-stats", style={"fontSize": "1.1em"})
+                ])
+            ])
         ]),
         
         # Main container
         html.Div([
-            # Header with progress
-            html.Div([
-                html.H1("Math Tutor", style={
-                    "color": "#2c3e50",
-                    "margin": "0",
-                    "fontSize": "2.5em"
-                }),
-                html.Div(id="progress-indicator", style={
-                    "color": "#6c757d",
-                    "fontSize": "1.1em",
-                    "marginTop": "10px"
-                })
-            ], style={
+            # Header
+            html.H1("Math Tutor", style={
                 "textAlign": "center",
-                "marginBottom": "30px"
+                "marginBottom": "2rem",
+                "color": "#2c3e50"
             }),
-
+            
+            # Problem number indicator
+            html.Div(id="progress-indicator", className="problem-number", style={
+                "textAlign": "center",
+                "marginBottom": "1.5rem",
+                "backgroundColor": "rgba(255, 255, 255, 0.6)",
+                "padding": "0.75rem",
+                "borderRadius": "8px",
+                "backdropFilter": "blur(8px)"
+            }),
+            
             # Problem card
             html.Div([
-                html.Div(id="problem-area", style={
-                    "fontSize": "1.3em",
-                    "fontWeight": "500",
-                    "marginBottom": "20px"
+                html.Div(id="problem-area", className="problem-text", style={
+                    "fontSize": "1.2em",
+                    "lineHeight": "1.6",
+                    "marginBottom": "1.5rem"
                 })
-            ], style={
-                "padding": "25px",
-                "backgroundColor": "#f8f9fa",
-                "borderRadius": "8px",
-                "border": "1px solid #dee2e6",
-                "marginBottom": "25px",
-                "boxShadow": "0 2px 4px rgba(0,0,0,0.05)"
+            ], className="card problem-card", style={
+                "padding": "2rem",
+                "borderRadius": "12px",
+                "marginBottom": "2rem"
             }),
 
             # Input and controls
@@ -184,104 +222,103 @@ app.layout = html.Div([
                     placeholder="Enter your answer here",
                     style={
                         "width": "100%",
-                        "padding": "12px",
-                        "marginBottom": "20px",
-                        "borderRadius": "4px",
-                        "border": "1px solid #ced4da",
-                        "fontSize": "1.1em"
+                        "padding": "1rem",
+                        "marginBottom": "1.5rem",
+                        "borderRadius": "8px",
+                        "fontSize": "1.1em",
+                        "backgroundColor": "rgba(255, 255, 255, 0.75)",
+                        "backdropFilter": "blur(8px)"
                     }
                 ),
 
                 # Button group
                 html.Div([
                     html.Button("Get Hint", id="get-hint", n_clicks=0, style={
-                        "backgroundColor": "#17a2b8",
+                        "backgroundColor": "rgba(23, 162, 184, 0.9)",
                         "color": "white",
                         "border": "none",
-                        "padding": "10px 20px",
-                        "margin": "5px",
-                        "borderRadius": "4px",
+                        "padding": "1rem 2rem",
+                        "borderRadius": "8px",
                         "cursor": "pointer",
-                        "fontSize": "1em",
-                        "transition": "background-color 0.3s"
+                        "fontSize": "0.9em",
+                        "fontWeight": "500",
+                        "letterSpacing": "0.5px",
+                        "textTransform": "uppercase"
                     }),
                     html.Button("Submit Answer", id="submit-answer", n_clicks=0, style={
-                        "backgroundColor": "#28a745",
+                        "backgroundColor": "rgba(40, 167, 69, 0.9)",
                         "color": "white",
                         "border": "none",
-                        "padding": "10px 20px",
-                        "margin": "5px",
-                        "borderRadius": "4px",
+                        "padding": "1rem 2rem",
+                        "borderRadius": "8px",
                         "cursor": "pointer",
-                        "fontSize": "1em",
-                        "transition": "background-color 0.3s"
+                        "fontSize": "0.9em",
+                        "fontWeight": "500",
+                        "letterSpacing": "0.5px",
+                        "textTransform": "uppercase"
                     }),
                     html.Button("See Solution", id="see-solution", n_clicks=0, style={
-                        "backgroundColor": "#ffc107",
+                        "backgroundColor": "rgba(255, 193, 7, 0.9)",
                         "color": "black",
                         "border": "none",
-                        "padding": "10px 20px",
-                        "margin": "5px",
-                        "borderRadius": "4px",
+                        "padding": "1rem 2rem",
+                        "borderRadius": "8px",
                         "cursor": "pointer",
-                        "fontSize": "1em",
-                        "transition": "background-color 0.3s"
+                        "fontSize": "0.9em",
+                        "fontWeight": "500",
+                        "letterSpacing": "0.5px",
+                        "textTransform": "uppercase"
                     }),
                     html.Button("Next Problem", id="next-problem", n_clicks=0, style={
-                        "backgroundColor": "#007bff",
+                        "backgroundColor": "rgba(0, 123, 255, 0.9)",
                         "color": "white",
                         "border": "none",
-                        "padding": "10px 20px",
-                        "margin": "5px",
-                        "borderRadius": "4px",
+                        "padding": "1rem 2rem",
+                        "borderRadius": "8px",
                         "cursor": "pointer",
-                        "fontSize": "1em",
-                        "transition": "background-color 0.3s"
+                        "fontSize": "0.9em",
+                        "fontWeight": "500",
+                        "letterSpacing": "0.5px",
+                        "textTransform": "uppercase"
                     })
-                ], style={
+                ], className="button-group", style={
                     "display": "flex",
                     "justifyContent": "center",
                     "flexWrap": "wrap",
-                    "gap": "10px",
-                    "marginBottom": "25px"
+                    "gap": "1rem",
+                    "marginBottom": "2rem"
                 })
             ]),
 
             # Feedback areas
             html.Div([
-                html.Div(id="feedback", style={
-                    "color": "#28a745",
-                    "marginBottom": "15px",
-                    "padding": "10px",
-                    "borderRadius": "4px",
-                    "fontWeight": "500",
-                    "textAlign": "center"
+                html.Div(id="feedback", className="card feedback-area", style={
+                    "marginBottom": "1.5rem",
+                    "padding": "1.5rem",
+                    "borderRadius": "12px"
                 }),
-                html.Div(id="hint-area", style={
-                    "color": "#17a2b8",
-                    "marginBottom": "15px",
-                    "padding": "15px",
-                    "backgroundColor": "#f8f9fa",
-                    "borderRadius": "4px",
-                    "border": "1px solid #dee2e6"
+                html.Div(id="hint-area", className="card feedback-area", style={
+                    "marginBottom": "1.5rem",
+                    "padding": "1.5rem",
+                    "borderRadius": "12px"
                 }),
-                html.Div(id="solution-area", style={
-                    "color": "#495057",
-                    "padding": "15px",
-                    "backgroundColor": "#f8f9fa",
-                    "borderRadius": "4px",
-                    "border": "1px solid #dee2e6",
-                    "whiteSpace": "pre-line",
-                    "lineHeight": "1.5"
+                html.Div(id="solution-area", className="card feedback-area", style={
+                    "padding": "1.5rem",
+                    "borderRadius": "12px",
+                    "lineHeight": "1.6"
                 })
             ])
         ], style={
             "maxWidth": "800px",
-            "margin": "40px auto",
-            "padding": "20px"
+            "margin": "2rem auto",
+            "padding": "0 1.5rem"
         }),
 
-        dcc.Store(id="store-state", data={"current_problem": 1, "hint_count": {}, "user_id": None})
+        # Add back the store component
+        dcc.Store(id="store-state", data={"current_problem": 1, "hint_count": {}, "user_id": None}),
+        
+        # Add URL location store
+        dcc.Location(id='url', refresh=False)
     ])
 ])
 
@@ -516,4 +553,4 @@ def next_problem(n_clicks, data):
     return data, "", "", ""
 
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8053)
+    app.run_server(debug=True, port=8054)

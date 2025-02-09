@@ -1,0 +1,160 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/* Animated gradient background */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(
+        -45deg,
+        rgba(152, 251, 152, 0.3),  /* Light green */
+        rgba(147, 112, 219, 0.3),  /* Purple */
+        rgba(255, 215, 0, 0.3)     /* Gold */
+    );
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Enhance card appearance with glass effect */
+.card {
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Special styling for stats cards */
+.stats-card {
+    background: rgba(255, 255, 255, 0.6) !important;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Add some depth to the buttons */
+button {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.2s ease !important;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Make input fields translucent */
+input {
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: rgba(147, 112, 219, 0.5) !important;
+    box-shadow: 0 4px 20px rgba(147, 112, 219, 0.15) !important;
+}
+
+/* Make text darker for better contrast */
+input, button, .card {
+    color: rgba(0, 0, 0, 0.8) !important;
+}
+
+input::placeholder {
+    color: rgba(0, 0, 0, 0.4) !important;
+    font-weight: 300;
+}
+
+/* Typography styles */
+h1 {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 2.5em;
+}
+
+h3 {
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.problem-number {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(8px);
+    padding: 0.75rem;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+/* Stats card styles */
+.stats-card {
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.stats-number {
+    font-size: 1.8em;
+    font-weight: 600;
+    color: #6c5ce7;
+    margin-bottom: 0.5rem;
+}
+
+/* Problem card styles */
+.problem-card {
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.problem-text {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* Button group styles */
+.button-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+/* Feedback area styles */
+.feedback-area {
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
