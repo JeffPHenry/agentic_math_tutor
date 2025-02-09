@@ -279,37 +279,44 @@ def get_hint(n_clicks, data):
     current = data.get("current_problem", 1)
     hint_count = data.get("hint_count", {})
     count = hint_count.get(str(current), 0)
+    
     prob = get_problem(current)
-
     if not prob:
         return html.Div("Problem data not found.", style={"color": "#dc3545"}), data
 
-    next_hint_key = str(count + 1)
-    hint = prob["hints"].get(next_hint_key)
+    # Get all hints up to the current count
+    hints = []
+    for i in range(1, min(count + 2, len(prob["hints"]) + 1)):
+        hint_key = str(i)
+        hint = prob["hints"].get(hint_key)
+        if hint:
+            hints.append(html.Div([
+                html.Strong(f"Hint {i}: "),
+                hint
+            ], style={"marginBottom": "10px"}))
 
-    if hint:
-        count += 1
-        hint_count[str(current)] = count
-        data["hint_count"] = hint_count
-        return html.Div([
-            html.Strong(f"Hint {next_hint_key}: ", style={"color": "#17a2b8"}),
-            html.Span(hint)
-        ], style={
-            "padding": "15px",
-            "backgroundColor": "#f8f9fa",
-            "borderRadius": "4px",
-            "border": "1px solid #bee5eb",
-            "marginBottom": "15px"
-        }), data
-    else:
-        return html.Div("No more hints available.", style={
+    if not hints:
+        return html.Div("No more hints available!", style={
             "color": "#6c757d",
-            "padding": "15px",
+            "fontStyle": "italic",
+            "padding": "10px",
             "backgroundColor": "#f8f9fa",
             "borderRadius": "4px",
-            "border": "1px solid #dee2e6",
             "marginBottom": "15px"
         }), data
+
+    # Update hint count
+    count += 1
+    hint_count[str(current)] = count
+    data["hint_count"] = hint_count
+
+    return html.Div(hints, style={
+        "padding": "15px",
+        "backgroundColor": "#f8f9fa",
+        "borderRadius": "4px",
+        "border": "1px solid #dee2e6",
+        "marginBottom": "15px"
+    }), data
 
 
 @app.callback(
@@ -373,4 +380,4 @@ def next_problem(n_clicks, data):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8052)
+    app.run_server(debug=True, port=8053)
